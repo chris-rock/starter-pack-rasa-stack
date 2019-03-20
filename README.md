@@ -86,6 +86,21 @@ This will start the server for emulating the custom action.
 ```make cmdline```  
 This will load the assistant in your terminal for you to chat.
 
+# Quickstart with Docker
+
+```
+# builds and train the model, this will take some minutes
+DOCKER_BUILDKIT=1 docker build -t rasa:starter-pack .
+
+# start rasa server
+docker run -it -p 5055:5055 --name rasa-start --rm rasa:starter-pack /bin/bash -c "make action-server"
+
+# run interactive client from within the container
+docker exec -it $(docker ps -aqf "name=rasa-start") /bin/bash -c 'make cmdline'
+```
+
+Note: If you see errors during the docker build process with exit code 137, it is likely that your docker environment has not enough memory. Try to increase the memory of the docker host system. This is especially important if you are using docker for mac or windows.
+
 ## What's next?
 This starter-pack lets you build a simple assistant which can tell Chuck Norris jokes. It's pretty fun, but there is so much more you can do to make a really engaging and cool assistant. Here are some ideas of what you can do to take this assistant to the next level:  
 - Use the Rasa NLU [training data file](https://forum.rasa.com/t/grab-the-nlu-training-dataset-and-starter-packs/903) which you downloaded previously from Rasa Community Forum. This dataset contains quite a few interesting intents which will enable your assistant to handle small talk. To use it, append the training examples to `data/nlu_data.md` file, retrain the NLU model and see how your assistant learns new skills.
